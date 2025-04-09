@@ -7,11 +7,11 @@ public class Arma : MonoBehaviour
     [SerializeField] float velocidadBala;
     [SerializeField] GameObject balaPrefab;
     [SerializeField] Transform puntoTiro;
-    [SerializeField] float tiempoEntreDisparos = 0.5f; // Tiempo entre disparos
+    [SerializeField] float tiempoEntreDisparos = 0.5f;
     [SerializeField] private AudioSource disparo;
 
 
-    private bool puedeDisparar = true; // Controla si se puede disparar
+    private bool puedeDisparar = true;
 
     private void Start()
     {
@@ -38,20 +38,20 @@ public class Arma : MonoBehaviour
 
     private IEnumerator DispararConRetraso()
     {
-        puedeDisparar = false; // Bloquea el disparo
-        Disparar(); // Llama al método para disparar
-        yield return new WaitForSeconds(tiempoEntreDisparos); // Espera 0.5 segundos
-        puedeDisparar = true; // Permite disparar nuevamente
+        puedeDisparar = false;
+        Disparar();
+        yield return new WaitForSeconds(tiempoEntreDisparos);
+        puedeDisparar = true;
     }
 
     public void Disparar()
     {
-        // Instanciar la bala y alinear su rotación con el punto de tiro
         GameObject clone = Instantiate(balaPrefab, puntoTiro.position, puntoTiro.rotation);
         Rigidbody rb = clone.GetComponent<Rigidbody>();
         rb.AddForce(puntoTiro.forward * velocidadBala, ForceMode.Impulse);
-        Destroy(clone, 3); // Destruir la bala después de 3 segundos
+        Destroy(clone, 3);
     }
 
-
 }
+
+

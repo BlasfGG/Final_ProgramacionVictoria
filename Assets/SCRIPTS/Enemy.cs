@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private Transform thePlayer;  // Referencia al jugador
+    private Transform thePlayer; 
 
     [Header("Explosión")]
-    [SerializeField] private float radio = 3f;  // Radio de detección del jugador
-    public LayerMask playerMask;               // Capa para detectar al jugador
-    public int damageToPlayer = 20;            // Daño que inflige al explotar
-    public ParticleSystem explosionEffect;     // Efecto visual de explosión
+    [SerializeField] private float radio = 3f;  
+    public int damageToPlayer = 20;            
+    public LayerMask playerMask;               
+    public ParticleSystem explosionEffect;     
 
     [Header("Vida")]
-    public int maxHealth = 100;                // Vida máxima del enemigo
-    private int currentHealth;                 // Vida actual
-    public float pushBackForce = 5f;           // Fuerza de retroceso al recibir daño
+    public int maxHealth = 100;                
+    private int currentHealth;                 
+    public float pushBackForce = 5f;           
 
-    private PlayerHealth playerHealth;         // Referencia a la salud del jugador
-    private bool hasExploded = false;          // Para que no explote más de una vez
+    private PlayerHealth playerHealth;         
+    private bool hasExploded = false;          
+
 
     private void Start()
     {
@@ -31,13 +32,13 @@ public class Enemy : MonoBehaviour
     {
         if (hasExploded) return;
 
-        // Detecta si el jugador está dentro del radio para explotar
         Collider[] hits = Physics.OverlapSphere(transform.position, radio, playerMask);
         if (hits.Length > 0)
         {
             Explode();
         }
     }
+        
 
     public void TakeDamage(int damage)
     {
@@ -77,12 +78,11 @@ public class Enemy : MonoBehaviour
     {
         hasExploded = true;
 
-        // Daña al jugador y lo empuja
+        
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(damageToPlayer);
 
-            // Empuja al jugador
             Rigidbody playerRb = thePlayer.GetComponent<Rigidbody>();
             if (playerRb != null)
             {
@@ -91,8 +91,9 @@ public class Enemy : MonoBehaviour
                 playerRb.AddForce(direction.normalized * pushBackForce, ForceMode.Impulse);
             }
         }
+            
 
-        // Efecto de explosión
+        
         if (explosionEffect != null)
         {
             ParticleSystem explosion = Instantiate(explosionEffect, transform.position, Quaternion.identity);
@@ -103,7 +104,7 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Para visualizar el radio de explosión en la escena
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

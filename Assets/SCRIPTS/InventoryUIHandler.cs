@@ -5,51 +5,44 @@ using UnityEngine.UI;
 public class InventoryUIHandler : MonoBehaviour
 {
 
-    [SerializeField] private GameObject inventoryPanel; // El objeto de la hierarchy que contiene el UI de el Inventario
-    [SerializeField] private GameObject uiItem; // El
-                                                // prefab de los objetos que se mostraran en el inventario. Contiene Imagen, Nombre y Descripcion del objeto
-    [SerializeField] private GameObject instanceDestination; // En donde se van a instanciar los items, para poderlos emparentar y que se acomoden segun el Layout Group
-    private GameObject[] itemsInstanciados = new GameObject[24]; // Aqui guardo los items instanciados para despues usarlos por pagina, que si del 0 al 7, del 8 al 15 y asi sucesivamente
-                                                                 // private int itemIndexCount = 0; // Llevo la cuenta de cuantos van instanciados, ademas me permite tener el indice de el ultimo item que instancie
+    [SerializeField] private GameObject inventoryPanel; 
+    [SerializeField] private GameObject uiItem; 
+                                                
+    [SerializeField] private GameObject instanceDestination; 
+    private GameObject[] itemsInstanciados = new GameObject[24]; 
+                                                                 
 
-    private InventoryHandler inventario; // Referencia al inventario
-    private bool inventoryOpened = false; // Si tengo o no abierto el inventario
+    private InventoryHandler inventario; 
+    private bool inventoryOpened = false; 
 
     private int actualPage = 0;
 
     private void Start()
     {
-        // Consigo referencias
         inventario = FindObjectOfType<InventoryHandler>();
-        itemsInstanciados = new GameObject[inventario.maxCapacity]; // Asigno el tamaño del arreglo a mi capacidad maxima de items
+        itemsInstanciados = new GameObject[inventario.maxCapacity]; 
     }
-
     private void Update()
     {
         ToggleInventory();
     }
+        
 
-    /// <summary>
-    /// Abre el inventario al presionar el input, en este caso "I"
-    /// </summary>
+
+    
     private void ToggleInventory()
     {
         if (OpenInventoryInput())
         {
-            // si es true           !true = false
-            // si es false          !false = true
+            
             inventoryOpened = !inventoryOpened;
-            inventoryPanel.SetActive(inventoryOpened); // Activa y desactiva el panel de el canvas
-
-
-
-
+            inventoryPanel.SetActive(inventoryOpened); 
 
             if (inventoryOpened)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                UpdateInventory(); // En caso de que se este abriendo el inventario, lo actualiza, es decir, agrega los items nuevos que hayamos recogido
+                UpdateInventory(); 
             }
             else
             {
@@ -61,20 +54,24 @@ public class InventoryUIHandler : MonoBehaviour
 
     }
 
+
+
+
+
     private void UpdateInventory()
     {
-        int itemsPerPage = 4; // Máximo de elementos por página
-        int startIndex = actualPage * itemsPerPage; // Índice inicial de la página actual
-        int endIndex = Mathf.Min(startIndex + itemsPerPage, inventario._Inventario.Count); // Índice final de la página actual
+        int itemsPerPage = 4; 
+        int startIndex = actualPage * itemsPerPage; 
+        int endIndex = Mathf.Min(startIndex + itemsPerPage, inventario._Inventario.Count); 
 
-        // Desactiva todos los elementos previamente instanciados
+        
         foreach (var item in itemsInstanciados)
         {
             if (item != null)
                 item.SetActive(false);
         }
 
-        // Posiciones específicas para los elementos
+        
         Vector3[] posiciones = new Vector3[]
         {
          new Vector3(-1433, -348, 0),
@@ -83,7 +80,7 @@ public class InventoryUIHandler : MonoBehaviour
          new Vector3(-651, -706, 0)
         };
 
-        // Instancia y posiciona los elementos de la página actual
+        
         for (int i = startIndex; i < endIndex; i++)
         {
             if (uiItem == null)
@@ -92,14 +89,14 @@ public class InventoryUIHandler : MonoBehaviour
                 return;
             }
 
-            if (itemsInstanciados[i] == null) // Si el elemento no ha sido instanciado aún
+            if (itemsInstanciados[i] == null) 
             {
                 GameObject newUiItem = Instantiate(uiItem);
-                newUiItem.transform.SetParent(instanceDestination.transform, false); // Emparenta respetando el layout
-                newUiItem.transform.localScale = Vector3.one; // Asegura la escala
+                newUiItem.transform.SetParent(instanceDestination.transform, false); 
+                newUiItem.transform.localScale = Vector3.one; 
 
-                // Asigna la posición específica
-                int localIndex = i % itemsPerPage; // Índice relativo dentro de la página
+                
+                int localIndex = i % itemsPerPage; 
                 newUiItem.transform.localPosition = posiciones[localIndex];
 
                 UIItem uiItemComponent = newUiItem.GetComponent<UIItem>();
@@ -114,28 +111,28 @@ public class InventoryUIHandler : MonoBehaviour
                 itemsInstanciados[i] = newUiItem;
             }
 
-            // Activa el elemento
+            
             itemsInstanciados[i].SetActive(true);
         }
     }
 
-    public void NextPage() // Numero maximo de paginas es 3, es 0,1,2
+    public void NextPage() 
     {
         actualPage++;
 
-        if (actualPage >= 2) // If para revisar que no pases de el limite de paginas
+        if (actualPage >= 2) 
         {
             actualPage = 2;
         }
 
-        int endIndex = Mathf.Min((actualPage * 2) + 2, inventario.maxCapacity); // Obtienes hasta que objeto vas a activar
+        int endIndex = Mathf.Min((actualPage * 2) + 2, inventario.maxCapacity); 
 
-        for (int i = (actualPage - 1) * 2; i < endIndex - 2; i++) // desactivas los objetos de la pagina anterior
+        for (int i = (actualPage - 1) * 2; i < endIndex - 2; i++) 
         {
             itemsInstanciados[i].SetActive(false);
         }
 
-        for (int i = actualPage * 2; i < endIndex; i++) // activas los objetos de la nueva pagina
+        for (int i = actualPage * 2; i < endIndex; i++) 
         {
             if (itemsInstanciados[i] != null)
                 itemsInstanciados[i].SetActive(true);
@@ -145,22 +142,22 @@ public class InventoryUIHandler : MonoBehaviour
     }
 
 
-    public void PreviousPage() // Numero maximo de paginas es 3, es 0,1,2
+    public void PreviousPage() 
     {
-        actualPage--; // 2 > 1  // 1 > 0 // 0 > 0
+        actualPage--; 
 
-        if (actualPage <= 0) // If para revisar que no pases de el limite de paginas
+        if (actualPage <= 0) 
         {
             actualPage = 0;
         }
-        int endIndex = Mathf.Min((actualPage * 2 + 2), inventario.maxCapacity); // Obtienes hasta que objeto vas a activar
+        int endIndex = Mathf.Min((actualPage * 2 + 2), inventario.maxCapacity); 
 
-        for (int i = (actualPage + 1) * 2; i < endIndex + 2; i++) // desactivas los objetos de la pagina siguiente
+        for (int i = (actualPage + 1) * 2; i < endIndex + 2; i++) 
         {
             itemsInstanciados[i].SetActive(false);
         }
 
-        for (int i = actualPage * 2; i < endIndex; i++) // activas los objetos de la nueva pagina
+        for (int i = actualPage * 2; i < endIndex; i++) 
         {
             if (itemsInstanciados[i] != null)
                 itemsInstanciados[i].SetActive(true);

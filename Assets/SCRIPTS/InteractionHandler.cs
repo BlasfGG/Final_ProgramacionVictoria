@@ -3,9 +3,8 @@ using UnityEngine;
 
 public class InteractionHandler : MonoBehaviour
 {
-    [SerializeField] protected internal float range; // alcance de el arma
-
-    [SerializeField] protected LayerMask detection; // a que se le puede disparar
+    [SerializeField] protected internal float range; 
+    [SerializeField] protected LayerMask detection; 
 
     protected RaycastHit target;
 
@@ -16,7 +15,7 @@ public class InteractionHandler : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 target.collider.GetComponent<IInteractable>().Interact();
-                Destroy(target.collider.gameObject); // Destruye el objeto al interactuar
+                Destroy(target.collider.gameObject); 
             }
         }
     }
@@ -26,5 +25,6 @@ public class InteractionHandler : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawRay(transform.position, transform.forward * range);
     }
+
 }
 

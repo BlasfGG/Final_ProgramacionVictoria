@@ -3,13 +3,13 @@ using UnityEngine;
 public class StillEnemy : MonoBehaviour
 {
     [Header("Configuración de Explosión")]
+    [Header("Configuración de Vida")]
     [SerializeField] private float explosionRadius = 3f;
     [SerializeField] private int damageToPlayer = 20;
     [SerializeField] private float pushBackForce = 5f;
+    [SerializeField] private int maxHealth = 100;
     [SerializeField] private ParticleSystem explosionEffect;
 
-    [Header("Configuración de Vida")]
-    [SerializeField] private int maxHealth = 100;
     private int currentHealth;
     private bool hasExploded = false;
 
@@ -22,7 +22,6 @@ public class StillEnemy : MonoBehaviour
     {
         if (hasExploded) return;
 
-        // Verificación más precisa del jugador
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (var hitCollider in hitColliders)
         {
@@ -31,6 +30,7 @@ public class StillEnemy : MonoBehaviour
                 PlayerHealth player = hitCollider.GetComponent<PlayerHealth>();
                 if (player != null)
                 {
+
                     Explode();
                     break;
                 }
@@ -49,12 +49,12 @@ public class StillEnemy : MonoBehaviour
         }
     }
 
+
     private void Explode()
     {
         if (hasExploded) return;
         hasExploded = true;
 
-        // Aplicar daño a todos los jugadores en el radio
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (var hitCollider in hitColliders)
         {
@@ -63,12 +63,12 @@ public class StillEnemy : MonoBehaviour
                 PlayerHealth playerHealth = hitCollider.GetComponent<PlayerHealth>();
                 if (playerHealth != null)
                 {
-                    Debug.Log("Aplicando daño al jugador"); // Mensaje de depuración
+                    Debug.Log("Aplicando daño al jugador");
                     ParticleExplosion();
                     playerHealth.TakeDamage(damageToPlayer);
                     Destroy(gameObject);
 
-                    // Empujar al jugador
+
                     Rigidbody rb = hitCollider.GetComponent<Rigidbody>();
                     if (rb != null)
                     {
@@ -80,8 +80,6 @@ public class StillEnemy : MonoBehaviour
             }
         }
     }
-
-    // Efecto visual
 
     private void OnDrawGizmosSelected()
     {
@@ -98,9 +96,13 @@ public class StillEnemy : MonoBehaviour
         Destroy(explosion.gameObject, 1f);
 
 
-        
+
     }
 
 
 
 }
+
+
+
+

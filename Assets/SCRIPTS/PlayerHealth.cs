@@ -12,7 +12,7 @@ public class PlayerHealth : MonoBehaviour
     public TextMeshProUGUI vidaTexto;
     private bool isDead = false;
 
-    public Transform spawnPoint; // Asigna esto en el Inspector
+    public Transform spawnPoint; 
     private PlayerMovement movementScript;
     private CharacterController charController;
     private NavMeshAgent navAgent;
@@ -59,22 +59,22 @@ public class PlayerHealth : MonoBehaviour
         isDead = true;
         Debug.Log("Jugador muerto. Respawneando...");
 
-        // 1. Desactivar movimiento y controles
+        
         movementScript.enabled = false;
 
-        // 2. Desactivar NavMeshAgent (si existe)
+        
         if (navAgent != null)
         {
             navAgent.enabled = false;
         }
 
-        // 3. Desactivar CharacterController (para evitar bloqueos)
+       
         if (charController != null)
         {
             charController.enabled = false;
         }
 
-        // 4. Iniciar respawn después de un delay
+        
         Invoke("Respawn", 2f);
     }
 
@@ -82,10 +82,10 @@ public class PlayerHealth : MonoBehaviour
     {
         Debug.Log("Respawneando en: " + spawnPoint.position);
 
-        // 1. Mover el jugador al spawn (sin físicas)
+        
         transform.position = spawnPoint.position;
 
-        // 2. Reactivar componentes
+       
         if (charController != null)
         {
             charController.enabled = true;
@@ -94,12 +94,12 @@ public class PlayerHealth : MonoBehaviour
         if (navAgent != null)
         {
             navAgent.enabled = true;
-            navAgent.Warp(spawnPoint.position); // Forzar posición en NavMesh
+            navAgent.Warp(spawnPoint.position); 
         }
 
         movementScript.enabled = true;
 
-        // 3. Restaurar salud
+       
         currentHealth = maxHealth;
         ActualizarUI();
         isDead = false;
