@@ -1,40 +1,40 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class Respawn : MonoBehaviour
-{
+//public class Respawn : MonoBehaviour
+//{
 
-    public string lastCheckpoint; // Aqui guardas cual es el ultimo
+//    [SerializeField] private Vector3 checkPoint; // Aqui es el checkpoint al que vas a ir 
+    
+//    private PlayerHealth health;
 
-    private Transform checkPoint; // Aqui es el checkpoint al que vas a ir
-    private Transform player;
+//    private void Start()
+//    {
+//        health = FindAnyObjectByType<PlayerHealth>();
 
-    public static Respawn instance; // Para saber que ya existe un repawn en la escena
+//        if (health == null)
+//        {
+//            Debug.LogError("PlayerHealth no encontrado en la escena.");
+//        }
+//    }
 
-    private void Awake()
-    {
-        if (instance == null) // Esta variable ya deberia tener asignado el respawn de la escena anterior
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Debug.Log("Respawn destruido");
-            Destroy(this.gameObject);
-        }
-        DontDestroyOnLoad(this);
-    }
+//    private void Update()
+//    {
+//        Spawn();
+//    }
 
-    public void Spawn()
-    {
-        if (!string.IsNullOrEmpty(lastCheckpoint))
-        {
-            checkPoint = GameObject.Find(lastCheckpoint).transform;
+//    public void Spawn()
+//    {
+//        if (health.currentHealth == 130 )
+//        {
+//            Debug.Log("Pablito");
+//            transform.position = checkPoint.normalized;
+//        }
+//    }
 
-            player = GameObject.Find("Prueba").transform;
+//}
+    
+   
 
-            player.transform.position = checkPoint.position;
-        }
-    }
 
-}

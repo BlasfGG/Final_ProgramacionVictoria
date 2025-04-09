@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4806932319939198205}
   - component: {fileID: 4759646288225536195}
   - component: {fileID: 3841969092548742859}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PLATAFORMA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.9063818, y: 0.33275, z: -0.8869}
-  m_LocalScale: {x: 107.22, y: 0.28765696, z: 107.22}
+  m_LocalScale: {x: 231.37006, y: 0.620735, z: 231.37006}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce9f60c78224a6740b91aaf0d246816a, type: 2}
+  - {fileID: 2100000, guid: 48175344938b29642ae116386b1a3f11, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

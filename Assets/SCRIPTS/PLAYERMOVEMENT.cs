@@ -1,106 +1,76 @@
 using UnityEngine;
 
-public class PLAYERMOVEMENT : MonoBehaviour
-{
-    
-    [SerializeField] private float jumpForce = 5.3f;
-  
-    [SerializeField] private float crouchSpeed = 4;
-    [SerializeField] private float walkspeed = 6;
-    [SerializeField] private float runSpeed = 8;
-
-    //private Respawn respawn;
-
-    private Rigidbody rb; 
-
-
-
-
-
-    private void Start()
-    {
-        //respawn = FindObjectOfType<Respawn>();
-
-        rb = rb == null ? GetComponent<Rigidbody>() : rb;
-    }
-
-    private void Update()
+    public class PlayerMovement : MonoBehaviour
     {
 
-    }
+        public float speed = 0f;
+        bool estaCorriendo;
+        public float velocidadCorrer = 5f;
+        private float velocidadNormal = 1f;
 
-    private void FixedUpdate()
-    {
-        Debug.Log(HorizontalAxis());
-        Debug.Log(Speed());
-        Move();
-        Jump();
-    }
+        //Saltar
+        public float gravity = -9.81f;
+        public float boxRadio = 0.3f;
+        public float jump = 3f;
+        public LayerMask groundMask;
+        private bool isgrounded;
+        public Transform groundCheck;
 
-  
-    private void Move() 
-    {
+        public CharacterController controller;
+        Vector3 velocity;
 
-
-        rb.velocity = transform.rotation * new Vector3(HorizontalAxis(), rb.velocity.y, VerticalAxis()) * Speed(); 
-    }
-
- 
-    public float Speed()
-    {
-        if (RunInputPressed())
+        void Update()
         {
-            return runSpeed;
+
+            isgrounded = Physics.CheckSphere(groundCheck.position, boxRadio, groundMask);
+            if (isgrounded && velocity.y < 0)
+            {
+                velocity.y = -2f;
+            }
+
+
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+
+            Vector3 move = transform.right * x + transform.forward * z;
+            controller.Move(move * speed * Time.deltaTime * velocidadNormal);
+
+            JumpCheck();
+            RunCheck();
+
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+
         }
-        else if (CrouchInputPressed())
+        public void JumpCheck()
         {
-            return crouchSpeed;
+            if (Input.GetKeyDown(KeyCode.Space) && isgrounded)
+            {
+                velocity.y = Mathf.Sqrt(jump * -2 * gravity);
+            }
         }
-
-        return RunInputPressed() ? runSpeed : CrouchInputPressed() ? crouchSpeed : walkspeed;
-    }
-
-    private void Jump()
-    {
-        if (JumpInputPressed())
+        public void RunCheck()
         {
-            Debug.Log("Saltando");
-            rb.AddForce(Vector3.up * jumpForce);
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                estaCorriendo = !estaCorriendo; //Si es true = lo apaga||, ||Si es false = lo prende
+            }
+            if (estaCorriendo == true)
+            {
+                velocidadNormal = velocidadCorrer;
+            }
+            else
+            {
+                velocidadNormal = 1f;
+            }
+        }
+        void OnDrawGizmos()
+        {
+            // Establecer el color del Gizmo
+            Gizmos.color = Color.red;
+            // Dibujar una esfera de alambre en la posición y radio especificados
+            Gizmos.DrawWireSphere(transform.position, boxRadio);
         }
     }
 
-    private float HorizontalAxis()
-    {
-        return Input.GetAxis("Horizontal"); 
-    }
 
-    private float VerticalAxis()
-    {
-        return Input.GetAxis("Vertical"); 
-    }
-
-    public bool JumpInputPressed()
-    {
-        return Input.GetKeyDown(KeyCode.Space);
-    }
-
-    public bool RunInputPressed()
-    {
-        return Input.GetKey(KeyCode.LeftShift);
-    }
-
-    public bool CrouchInputPressed()
-    {
-        return Input.GetKey(KeyCode.LeftControl);
-    }
-
-        
-
-        
-
-
-
-
-
-
-}

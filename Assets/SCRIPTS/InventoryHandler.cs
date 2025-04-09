@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class INVENTORYHANDLER : MonoBehaviour
+public class InventoryHandler : MonoBehaviour
 {
     [SerializeField] private List<Item> inventario;
     public List<Item> _Inventario { get => inventario; }
