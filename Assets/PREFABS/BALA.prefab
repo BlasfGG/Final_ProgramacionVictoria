@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3706726834332441646}
   - component: {fileID: 8070382462254424705}
   - component: {fileID: 896487138494620033}
+  - component: {fileID: 295217410680366442}
   m_Layer: 0
   m_Name: BALA
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -89.87701, y: -1.11, z: 90.826}
-  m_LocalScale: {x: 0.06068904, y: 0.06068904, z: 0.06068904}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 589a891318556ae4ebed53439442fac6, type: 2}
+  - {fileID: 2100000, guid: c1995b87c34339e439d4d0893f58a573, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -133,3 +134,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &295217410680366442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927107545861387859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c79a40a09e1b34d832c08db1a37e5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletHolePrefab: {fileID: 2186429063564830747, guid: 22ddef1f6dc0d97468c9ff12eb35eca6,
+    type: 3}
